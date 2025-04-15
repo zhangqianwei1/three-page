@@ -1,35 +1,39 @@
+import { neon } from "@neondatabase/serverless";
+import { revalidatePath } from "next/cache";
+const sql = neon(`${process.env.DATABASE_URL}`);
 
-
-'use client'
-import { useActionState, startTransition } from 'react'
-import { createAction } from './actions'
-export default function Page() {
-  const [state, formAction] = useActionState(createAction, {
-    errors: {
-      email: [],
-      password: []
-    }
-  })
-  const emailState = state?.errors.email ? state?.errors.email[0] : '✔'
-  const passwordState = state?.errors.password ? state?.errors.password[0] : '✔'
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    startTransition(() => {
-      formAction(new FormData(e.currentTarget as HTMLFormElement))
-    })
+export default async function Page() {
+  const result = await sql`SELECT * FROM users`;
+  async function createAction(formData: FormData) {
+    "use server";
+    const username = formData.get("username");
+    const possword = formData.get("possword");
+    await sql`INSERT INTO users (username, possword) VALUES (${username}, ${possword})`;
+    revalidatePath("/");
   }
   return (
     <div>
-      hello page 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input type="text" className="border" name="email" /> { emailState }
-        </div>
-        <div>
-          <input type="password" className="border" name="password" /> { passwordState }
-        </div>
-        <button type="submit">submit</button>
-      </form>
+      Page
+      <div>
+        <form action={createAction}>
+          <div>
+            用户名：
+            <input type="text" className="border" name="username" />
+          </div>
+          <div>
+            密码：
+            <input type="text" className="border" name="possword" />
+          </div>
+          <button type="submit">注册</button>
+        </form>
+      </div>
+      <ul>
+        {result.map((item) => (
+          <li key={item.id}>
+            {item.username},{item.possword}
+          </li>
+        ))}
+      </ul>
     </div>
-  )
-} 
+  );
+}
