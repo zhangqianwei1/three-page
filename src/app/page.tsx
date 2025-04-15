@@ -30,7 +30,7 @@
 import { useActionState, startTransition } from 'react'
 import { createAction } from './actions'
 export default function Page() {
-  const [state, formAction, isPending] = useActionState(createAction, {
+  const [state, formAction] = useActionState(createAction, {
     errors: {
       email: [],
       password: []

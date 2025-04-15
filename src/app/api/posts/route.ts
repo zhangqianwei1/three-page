@@ -18,9 +18,7 @@ export async function GET(request: NextRequest) {
   })
 }
 
-export async function POST(request: NextRequest) {
-  const { city } = await request.json()
-  console.log('city')
+export async function POST() {
   return NextResponse.json({
     status: 200,
     body: 'post success'
