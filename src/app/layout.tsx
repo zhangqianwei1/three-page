@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "zqw store",
@@ -20,7 +20,8 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
-        <Footer/>
+        <Footer />
+        <Toaster />
       </body>
     </html>
   );
