@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Fragment } from "react";
-import { NavList, Title } from "@/src/lib/constants";
+import { NavList, Title } from "@/lib/constants";
 import { Separator } from "./ui/separator";
 
 export default async function Footer() {
